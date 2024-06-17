@@ -19,6 +19,7 @@ export default class Environment
         // Debug
         if(this.debug.active)
             {
+
                 this.debugFolder
                     .add(this.environmentMap, 'intensity')
                     .name('envMapIntensity')
@@ -26,6 +27,8 @@ export default class Environment
                     .max(4)
                     .step(0.001)
                     .onChange(this.environmentMap.updateMaterials)
+                    
+
             }
     }
 
