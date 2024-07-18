@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { CuboidCollider, RigidBody } from '@react-three/rapier' 
 import { useMemo, useState, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import {useGLTF} from '@react-three/drei'
+import {Float, Text, useGLTF} from '@react-three/drei'
 
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
 
@@ -14,6 +14,20 @@ const wallMaterial = new THREE.MeshStandardMaterial({ color: 'slategrey' })
 export function BlockStart({position = [0, 0, 0]})
 {
     return <group position={position}>
+        <Float floatIntensity={0.25} rotationIntensity={0.25}>
+            <Text 
+                scale={0.5}
+                font='./bebas-neue-v9-latin-regular.woff'
+                maxWidth={ 0.25 }
+                lineHeight={ 0.75 }
+                textAlign="right"
+                position={ [ 0.75, 0.65, 0 ] }
+                rotation-y={ - 0.25 }
+            >
+                Marble Race
+                <meshBasicMaterial toneMapped={false} />
+            </Text>
+        </Float>
         <mesh geometry={boxGeometry} material={floor1Material} position={[0, -0.1, 0]} scale={[4, 0.2, 4]} receiveShadow>
         </mesh>
     </group>
@@ -28,6 +42,14 @@ export function BlockEnd({position = [0, 0, 0]})
     })
 
     return <group position={position}>
+        <Text
+            font="./bebas-neue-v9-latin-regular.woff"
+            scale={ 1 }
+            position={ [ 0, 2.25, 2 ] }
+        >
+            FINISH
+            <meshBasicMaterial toneMapped={ false } />
+        </Text>
         <mesh geometry={boxGeometry} material={floor1Material} position={[0, 0, 0]} scale={[4, 0.2, 4]} receiveShadow>
         </mesh>
         <RigidBody type='fixed' colliders="hull" restitution={ 0.2 } friction={ 0 } position={[0, 0.25, 0]}>
@@ -143,7 +165,11 @@ function Bounds({ length = 1 })
     </>
 }
 
-export function Level({ count = 5, types = [BlockSpinner, BlockAxe, BlockLimbo]})
+export function Level({ 
+    count = 5, 
+    types = [BlockSpinner, BlockAxe, BlockLimbo],
+    seed = 0
+})
 {
     const blocks = useMemo(() =>
     {
@@ -156,7 +182,7 @@ export function Level({ count = 5, types = [BlockSpinner, BlockAxe, BlockLimbo]}
         }
 
         return blocks
-    }, [count, types])
+    }, [count, types, seed])
 
     return <>
         <BlockStart position={[0, 0, 0]} />
